@@ -57,7 +57,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.WorkerModule.debug}",
+              "image": "${MODULES.WorkerModule.arm32v7.debug}",
               "createOptions": {}
             }
           }

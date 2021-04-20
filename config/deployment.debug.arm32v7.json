@@ -30,13 +30,13 @@
           }
         },
         "modules": {
-          "SampleModule": {
+          "WorkerModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/samplemodule:0.0.1-amd64.debug",
+              "image": "localhost:5000/workermodule:0.0.1-arm32v7.debug",
               "createOptions": "{}"
             }
           }
@@ -47,7 +47,7 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "SampleModuleToIoTHub": "FROM /messages/modules/SampleModule/outputs/* INTO $upstream"
+          "WorkerModuleToIoTHub": "FROM /messages/modules/WorkerModule/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

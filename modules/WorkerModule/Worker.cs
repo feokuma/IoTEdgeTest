@@ -64,27 +64,34 @@ namespace WorkerModule
             int ledRed = 1;
             int ledGreen = 2;
             int ledBlue = 3;
+            int button = 17;
 
             using (var controller = new GpioController())
             {
                 controller.OpenPin(ledRed, PinMode.Output);
                 controller.OpenPin(ledGreen, PinMode.Output);
                 controller.OpenPin(ledBlue, PinMode.Output);
+                controller.OpenPin(button, PinMode.Input);
 
                 Console.WriteLine("Pins opened");
 
                 while (true)
                 {
+
+                    // if (controller.Read(button) == PinValue.High)
+                    // {
                     controller.Write(ledBlue, PinValue.High);
                     controller.Write(ledRed, PinValue.High);
                     controller.Write(ledGreen, PinValue.High);
+                    // }
 
                     Thread.Sleep(300);
-
+                    // else
+                    // {
                     controller.Write(ledBlue, PinValue.Low);
                     controller.Write(ledRed, PinValue.Low);
                     controller.Write(ledGreen, PinValue.Low);
-
+                    // }
                     Thread.Sleep(1000);
                 }
             }
