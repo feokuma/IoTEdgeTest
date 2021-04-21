@@ -59,6 +59,20 @@
             "restartPolicy": "always",
             "settings": {
               "image": "${MODULES.WorkerModule}",
+              "createOptions": {
+                "HostConfig": {
+                  "Privileged": true
+                }
+              }
+            }
+          },
+          "ButtonModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ButtonModule}",
               "createOptions": {}
             }
           }
@@ -69,6 +83,7 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
+          "ButtonModuleToIoTHub": "FROM /messages/modules/ButtonModule/outputs/* INTO $upstream",
           "WorkerModuleToIoTHub": "FROM /messages/modules/WorkerModule/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
