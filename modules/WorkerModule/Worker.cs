@@ -53,9 +53,9 @@ namespace WorkerModule
 
         private void ThreadBody(object userContext)
         {
-            int ledRed = 1;
-            int ledGreen = 2;
-            int ledBlue = 3;
+            int ledRed = 2;
+            int ledGreen = 3;
+            int ledBlue = 4;
             int button = 17;
 
             using (var controller = new GpioController())
