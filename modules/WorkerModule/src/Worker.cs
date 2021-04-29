@@ -47,6 +47,9 @@ namespace WorkerModule
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
+            // Register callback to be called when a message is received by the module
+            // await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
+
             var thread = new Thread(() => ThreadBody(ioTHubModuleClient));
             thread.Start();
         }
@@ -69,23 +72,50 @@ namespace WorkerModule
 
                 while (true)
                 {
+                    if (Debounce(controller, button))
+                    {
+                        controller.Write(ledBlue, PinValue.High);
+                        controller.Write(ledRed, PinValue.High);
+                        controller.Write(ledGreen, PinValue.High);
+                    }
 
-                    // if (controller.Read(button) == PinValue.High)
-                    // {
-                    controller.Write(ledBlue, PinValue.High);
-                    controller.Write(ledRed, PinValue.High);
-                    controller.Write(ledGreen, PinValue.High);
-                    // }
-
-                    Thread.Sleep(300);
-                    // else
-                    // {
-                    controller.Write(ledBlue, PinValue.Low);
-                    controller.Write(ledRed, PinValue.Low);
-                    controller.Write(ledGreen, PinValue.Low);
-                    // }
-                    Thread.Sleep(1000);
+                    // Thread.Sleep(300);
+                    else
+                    {
+                        controller.Write(ledBlue, PinValue.Low);
+                        controller.Write(ledRed, PinValue.Low);
+                        controller.Write(ledGreen, PinValue.Low);
+                    }
+                    // Thread.Sleep(1000);
                 }
+            }
+        }
+
+        private bool Debounce(GpioController controller, int pin)
+        {
+            int debounceDelay = 50000;
+            long debounceTick = DateTime.Now.Ticks;
+            PinValue buttonState = controller.Read(pin);
+
+            do
+            {
+                PinValue currentState = controller.Read(pin);
+
+                if (currentState != buttonState)
+                {
+                    debounceTick = DateTime.Now.Ticks;
+                    buttonState = currentState;
+                }
+            }
+            while (DateTime.Now.Ticks - debounceTick < debounceDelay);
+
+            if (buttonState == PinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

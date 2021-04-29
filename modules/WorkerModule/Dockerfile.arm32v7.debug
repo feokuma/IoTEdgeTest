@@ -14,7 +14,7 @@ WORKDIR /app
 COPY WorkerModule.csproj ./
 RUN dotnet restore
 
-COPY . ./
+COPY ./src ./
 RUN dotnet publish -c Debug -o out
 
 FROM base

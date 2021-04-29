@@ -48,6 +48,13 @@ namespace ButtonModule
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
+            var messageBytes = Encoding.ASCII.GetBytes($"Test Message {DateTime.Now.ToString("hh:mm:ss")}");
+            using (var pipeMessage = new Message(messageBytes))
+            {
+                await ioTHubModuleClient.SendEventAsync("output1", pipeMessage);
+
+                Console.WriteLine("Received message sent");
+            }
             // Register callback to be called when a message is received by the module
             await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
         }
