@@ -48,13 +48,13 @@ namespace WorkerModule
             Console.WriteLine("IoT Hub module client initialized.");
 
             // Register callback to be called when a message is received by the module
-            // await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
+            await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
 
-            var thread = new Thread(() => ThreadBody(ioTHubModuleClient));
+            var thread = new Thread(() => ThreadBody());
             thread.Start();
         }
 
-        private void ThreadBody(object userContext)
+        private void ThreadBody()
         {
             int ledRed = 2;
             int ledGreen = 3;
@@ -133,20 +133,21 @@ namespace WorkerModule
             string messageString = Encoding.UTF8.GetString(messageBytes);
             Console.WriteLine($"Received message: {counterValue}, Body: [{messageString}]");
 
-            if (!string.IsNullOrEmpty(messageString))
-            {
-                using (var pipeMessage = new Message(messageBytes))
-                {
-                    foreach (var prop in message.Properties)
-                    {
-                        pipeMessage.Properties.Add(prop.Key, prop.Value);
-                    }
-                    await moduleClient.SendEventAsync("output1", pipeMessage);
+            // if (!string.IsNullOrEmpty(messageString))
+            // {
+            //     using (var pipeMessage = new Message(messageBytes))
+            //     {
+            //         foreach (var prop in message.Properties)
+            //         {
+            //             pipeMessage.Properties.Add(prop.Key, prop.Value);
+            //         }
+            //         await moduleClient.SendEventAsync("output1", pipeMessage);
 
-                    Console.WriteLine("Received message sent");
-                }
-            }
-            return MessageResponse.Completed;
+            //         Console.WriteLine("Received message sent");
+            //     }
+            // }
+
+            return await Task.FromResult(MessageResponse.Completed);
         }
     }
 }

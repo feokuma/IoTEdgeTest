@@ -84,7 +84,7 @@
         "routes": {
           "ButtonModuleToIoTHub": "FROM /messages/modules/ButtonModule/outputs/* INTO $upstream",
           "WorkerModuleToIoTHub": "FROM /messages/modules/WorkerModule/outputs/* INTO $upstream",
-          "ButtonToWorker": "FROM /messages/modules/buttonmodule/outputs/output1 INTO BrokeredEndpoint(\"/modules/workermodule/inputs/input1\")"
+          "ButtonToWorker": "FROM /messages/modules/ButtonModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/WorkerModule/inputs/input1\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

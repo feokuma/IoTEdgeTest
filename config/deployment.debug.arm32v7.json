@@ -36,7 +36,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "feokuma/workermodule:0.0.3-arm32v7.debug",
+              "image": "feokuma/workermodule:0.0.4-arm32v7.debug",
               "createOptions": "{\"HostConfig\":{\"Privileged\":true}}"
             }
           },
@@ -46,7 +46,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "feokuma/buttonmodule:0.0.2-arm32v7.debug",
+              "image": "feokuma/buttonmodule:0.0.3-arm32v7.debug",
               "createOptions": "{}"
             }
           }
@@ -58,7 +58,8 @@
         "schemaVersion": "1.0",
         "routes": {
           "ButtonModuleToIoTHub": "FROM /messages/modules/ButtonModule/outputs/* INTO $upstream",
-          "WorkerModuleToIoTHub": "FROM /messages/modules/WorkerModule/outputs/* INTO $upstream"
+          "WorkerModuleToIoTHub": "FROM /messages/modules/WorkerModule/outputs/* INTO $upstream",
+          "ButtonToWorker": "FROM /messages/modules/ButtonModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/WorkerModule/inputs/input1\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
