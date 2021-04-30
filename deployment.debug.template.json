@@ -72,7 +72,11 @@
             "restartPolicy": "always",
             "settings": {
               "image": "${MODULES.ButtonModule.arm32v7.debug}",
-              "createOptions": {}
+              "createOptions": {
+                "HostConfig": {
+                  "Privileged": true
+                }
+              }
             }
           }
         }

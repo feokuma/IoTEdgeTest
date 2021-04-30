@@ -46,8 +46,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "feokuma/buttonmodule:0.0.3-arm32v7.debug",
-              "createOptions": "{}"
+              "image": "feokuma/buttonmodule:0.0.5-arm32v7.debug",
+              "createOptions": "{\"HostConfig\":{\"Privileged\":true}}"
             }
           }
         }
