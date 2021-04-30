@@ -24,7 +24,7 @@
                 "quoteArgs": true
             },
             "sourceFileMap": {
-                "/app": "${workspaceFolder}/modules/WorkerModule"
+                "/app": "${workspaceFolder}/modules/src/WorkerModule"
             },
             "justMyCode": true
         },
@@ -48,7 +48,7 @@
                 "quoteArgs": true
             },
             "sourceFileMap": {
-                "/app": "${workspaceFolder}/modules/ButtonModule"
+                "/app": "${workspaceFolder}/modules/src/ButtonModule"
             },
             "justMyCode": true
         },
