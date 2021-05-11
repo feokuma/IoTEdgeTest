@@ -32,3 +32,6 @@ artifacts/
 
 [Bb]in/
 [Oo]bj/
+
+config
+config/*
