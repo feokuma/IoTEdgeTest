@@ -21,3 +21,7 @@ Projeto para estudo da criação e deploy de módulos IoT Edge e para aprender c
 -   [Raspberry Pi 3](https://www.raspberrypi.org/)
 -   [Raspberry Pi GPIO Pinout](https://learn.sparkfun.com/tutorials/raspberry-gpio/gpio-pinout)
 -   [Módulo Led RGB 5mm - KY-016](https://www.arduinoomega.com/modulo-led-rgb-5mm-ky-016-?utm_source=Site&utm_medium=GoogleMerchant&utm_campaign=GoogleMerchant&gclid=Cj0KCQjwpdqDBhCSARIsAEUJ0hMf_pb_CrzSmB94NqReLcwDGK6L4_Vv8dy4BvDZvM-tQ26JE8238YEaAoHvEALw_wcB)
+
+
+## Versionamento da pasta .vscode
+A pasta de configuração do vscode está sendo versionada porque tem configurações importantes para o build debug e deploy das imagens
