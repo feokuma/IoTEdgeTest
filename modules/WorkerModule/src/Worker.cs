@@ -58,7 +58,21 @@ namespace WorkerModule
             Console.WriteLine("GPIO Ready");
 
             await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
+            await ioTHubModuleClient.SetMethodHandlerAsync("DirectMethodTest", DirectMethodMessageAsync, ioTHubModuleClient);
         }
+
+        private async Task<MethodResponse> DirectMethodMessageAsync(MethodRequest methodRequest, object userContext)
+        {
+            var data = Encoding.ASCII.GetString(methodRequest.Data);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Message received from direct method: {data}");
+            Console.ResetColor();
+
+            string result = $"{{\"result\":\"Executed direct method: {methodRequest.Name}\"}}";
+            return await Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+        }
+
         private async Task<MessageResponse> PipeMessage(Message message, object userContext)
         {
             var moduleClient = userContext as ModuleClient;
