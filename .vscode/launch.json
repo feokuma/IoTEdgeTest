@@ -12,7 +12,7 @@
             "pipeTransport": {
                 "pipeProgram": "docker",
                 "pipeArgs": [
-                    "-H ssh://pi@192.168.137.195",
+                    "-H ssh://pi@192.168.12.90",
                     "exec",
                     "-i",
                     "WorkerModule",
@@ -24,7 +24,7 @@
                 "quoteArgs": true
             },
             "sourceFileMap": {
-                "/app": "${workspaceFolder}/modules/src/WorkerModule"
+                "/app": "${workspaceFolder}/modules/WorkerModule/src"
             },
             "justMyCode": true
         },
