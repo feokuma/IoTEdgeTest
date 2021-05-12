@@ -57,8 +57,8 @@ namespace WorkerModule
             controller.OpenPin(ledBlue, PinMode.Output);
             Console.WriteLine("GPIO Ready");
 
-            await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
             await ioTHubModuleClient.SetMethodHandlerAsync("DirectMethodTest", DirectMethodMessageAsync, ioTHubModuleClient);
+            await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
         }
 
         private async Task<MethodResponse> DirectMethodMessageAsync(MethodRequest methodRequest, object userContext)
@@ -69,7 +69,13 @@ namespace WorkerModule
             Console.WriteLine($"Message received from direct method: {data}");
             Console.ResetColor();
 
-            string result = $"{{\"result\":\"Executed direct method: {methodRequest.Name}\"}}";
+            if (data.Contains("buttonClicked"))
+            {
+                IsActive = !IsActive;
+                LedState(IsActive);
+            }
+
+            string result = $"{{\"ledStatus\": {IsActive}}}";
             return await Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
         }
 
