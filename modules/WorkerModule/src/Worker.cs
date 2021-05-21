@@ -17,6 +17,7 @@ namespace WorkerModule
         private bool IsActive = false;
 
         private GpioController controller;
+        private ModuleClient ioTHubModuleClient;
         private const int ledRed = 2;
         private const int ledGreen = 3;
         private const int ledBlue = 4;
@@ -47,7 +48,7 @@ namespace WorkerModule
             var mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
             ITransportSettings[] settings = { mqttSetting };
 
-            var ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
+            ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
@@ -72,11 +73,11 @@ namespace WorkerModule
             if (data.Contains("buttonClicked"))
             {
                 IsActive = !IsActive;
-                LedState(IsActive);
+                await LedState(IsActive);
             }
 
-            string result = $"{{\"ledStatus\": {IsActive}}}";
-            return await Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+            var result = new MethodResponse(Encoding.UTF8.GetBytes($"{{\"ledStatus\": {IsActive}}}"), 200);
+            return await Task.FromResult(result);
         }
 
         private async Task<MessageResponse> PipeMessage(Message message, object userContext)
@@ -93,13 +94,13 @@ namespace WorkerModule
             if (!string.IsNullOrEmpty(messageString) && messageString == "buttonClicked")
             {
                 IsActive = !IsActive;
-                LedState(IsActive);
+                await LedState(IsActive);
             }
 
             return await Task.FromResult(MessageResponse.Completed);
         }
 
-        private void LedState(bool active)
+        private async Task LedState(bool active)
         {
             if (active)
             {
@@ -113,8 +114,13 @@ namespace WorkerModule
                 controller.Write(ledRed, PinValue.Low);
                 controller.Write(ledGreen, PinValue.Low);
             }
-
-            Console.WriteLine($"Led actived: {active}");
+            var ledStatus = new { ledStatus = IsActive };
+            var message = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(ledStatus);
+            using (var pipeMessage = new Message(message))
+            {
+                await ioTHubModuleClient.SendEventAsync("output", pipeMessage);
+                Console.WriteLine($"Led actived: {active}");
+            }
         }
     }
 }
