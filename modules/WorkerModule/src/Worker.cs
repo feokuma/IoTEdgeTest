@@ -104,8 +104,8 @@ namespace WorkerModule
         {
             if (active)
             {
-                controller.Write(ledBlue, PinValue.High);
-                controller.Write(ledRed, PinValue.High);
+                //controller.Write(ledBlue, PinValue.High);
+                //controller.Write(ledRed, PinValue.High);
                 controller.Write(ledGreen, PinValue.High);
             }
             else
