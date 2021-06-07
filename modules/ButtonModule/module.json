@@ -1,17 +1,17 @@
 {
-    "$schema-version": "0.0.1",
-    "description": "",
-    "image": {
-        "repository": "feokuma/buttonmodule",
-        "tag": {
-            "version": "0.0.2",
-            "platforms": {
-                "arm32v7": "./Dockerfile.arm32v7",
-                "arm32v7.debug": "./Dockerfile.arm32v7.debug"
-            }
-        },
-        "buildOptions": [],
-        "contextPath": "./"
+  "$schema-version": "0.0.1",
+  "description": "",
+  "image": {
+    "repository": "feokuma/buttonmodule",
+    "tag": {
+      "version": "0.0.5",
+      "platforms": {
+        "arm32v7": "./Dockerfile.arm32v7",
+        "arm32v7.debug": "./Dockerfile.arm32v7.debug"
+      }
     },
-    "language": "csharp"
+    "buildOptions": [],
+    "contextPath": "./"
+  },
+  "language": "csharp"
 }

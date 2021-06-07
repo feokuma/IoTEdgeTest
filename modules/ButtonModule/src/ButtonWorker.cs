@@ -13,6 +13,7 @@ namespace ButtonModule
     public class ButtonWorker : BackgroundService
     {
         public ModuleClient ioTHubModuleClient;
+        public DateTime LastEvent = DateTime.MinValue;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -50,13 +51,17 @@ namespace ButtonModule
             Console.WriteLine("IoT Hub module client initialized.");
 
             var controller = new GpioController();
-            controller.OpenPin(17, PinMode.Input);
+            controller.OpenPin(17, PinMode.InputPullUp);
             controller.RegisterCallbackForPinValueChangedEvent(17, PinEventTypes.Rising, buttonPin_ValueChanged);
         }
 
         private async void buttonPin_ValueChanged(object sender, PinValueChangedEventArgs args)
         {
-            var messageBytes = Encoding.ASCII.GetBytes($"buttonClicked");//$"Test Message {DateTime.Now.ToString("hh:mm:ss")}");
+            if (DateTime.Now.Subtract(LastEvent) < TimeSpan.FromMilliseconds(500))
+                return;
+
+            LastEvent = DateTime.Now;
+            var messageBytes = Encoding.ASCII.GetBytes($"buttonClicked");
             using (var pipeMessage = new Message(messageBytes))
             {
                 await ioTHubModuleClient.SendEventAsync("output1", pipeMessage);
