@@ -19,16 +19,12 @@ namespace ButtonModule
         {
             await Init();
 
-            // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
             AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
             Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
             WhenCancelled(cts.Token).Wait();
         }
 
-        /// <summary>
-        /// Handles cleanup operations when app is cancelled or unloads
-        /// </summary>
         public static Task WhenCancelled(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -36,16 +32,11 @@ namespace ButtonModule
             return tcs.Task;
         }
 
-        /// <summary>
-        /// Initializes the ModuleClient and sets up the callback to receive
-        /// messages containing temperature information
-        /// </summary>
         public async Task Init()
         {
             MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
             ITransportSettings[] settings = { mqttSetting };
 
-            // Open a connection to the Edge runtime
             ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
