@@ -36,7 +36,7 @@
             "pipeTransport": {
                 "pipeProgram": "docker",
                 "pipeArgs": [
-                    "-H ssh://pi@192.168.137.195",
+                    "-H ssh://pi@192.168.12.90",
                     "exec",
                     "-i",
                     "ButtonModule",
@@ -48,7 +48,7 @@
                 "quoteArgs": true
             },
             "sourceFileMap": {
-                "/app": "${workspaceFolder}/modules/src/ButtonModule"
+                "/app": "${workspaceFolder}/modules/ButtonModule"
             },
             "justMyCode": true
         },
